@@ -1,10 +1,11 @@
-const {
+import {
   installChromiumIfNeeded,
   getChromiumPath,
-} = require('../utils');
+} from '../utils';
 jest.mock('../utils');
 
-const NetlifyChromiumPlugin = require('../index');
+import NetlifyChromiumPlugin from '../index';
+
 const initialChromePath = process.env.CHROME_PATH;
 
 describe('NetlifyChromiumPlugin', () => {

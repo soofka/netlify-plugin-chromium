@@ -1,4 +1,4 @@
-const installChromiumIfNeeded = () => {
+export const installChromiumIfNeeded = () => {
   require('child_process').execSync(
     'npm list chromium || npm install chromium',
     {
@@ -8,12 +8,7 @@ const installChromiumIfNeeded = () => {
   );
 };
 
-const getChromiumPath = () => {
+export const getChromiumPath = () => {
   const { path } = require('chromium');
   return path;
-};
-
-module.exports = {
-  installChromiumIfNeeded,
-  getChromiumPath,
 };

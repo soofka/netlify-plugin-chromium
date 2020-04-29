@@ -26,6 +26,9 @@
       "statements": 80
     }
   },
+  "transform": {
+    "^.+\\.js$": "babel-jest"
+  },
   "testRegex": "tests/.*\\.test\\.js$",
   "testURL": "http://localhost"
 }

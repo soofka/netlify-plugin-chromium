@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const YAML = require('yamljs');
+import fs from 'fs';
+import path from 'path';
+import YAML from 'yamljs';
 
 describe('NetlifyChromiumPlugin manifest', () => {
 

@@ -1,7 +1,7 @@
-const {
+import {
   installChromiumIfNeeded,
   getChromiumPath,
-} = require('../utils');
+} from '../utils';
 
 describe('NetlifyChromiumPlugin utils', () => {
 

@@ -1,7 +1,7 @@
-const {
+import {
   installChromiumIfNeeded,
   getChromiumPath,
-} = require('./utils.js');
+} from './utils'
 
 const NetlifyChromiumPlugin = {
   onInstall: ({ inputs, utils }) => {
@@ -25,4 +25,4 @@ const NetlifyChromiumPlugin = {
   },
 };
 
-module.exports = NetlifyChromiumPlugin;
+export default NetlifyChromiumPlugin;
