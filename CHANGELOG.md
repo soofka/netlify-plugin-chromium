@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/soofka/netlify-plugin-chromium/compare/v0.0.2...v0.0.3) (2020-04-29)
+
+
+### Bug Fixes
+
+* bundled plugin into single output file as required by Netlify ([c2811e5](https://github.com/soofka/netlify-plugin-chromium/commit/c2811e5bed8a8d83e760e53992a06f32d7d6747d))
+
 ### 0.0.2 (2020-04-29)
 
 
