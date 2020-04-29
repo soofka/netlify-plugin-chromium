@@ -1,0 +1,45 @@
+{
+  "name": "netlify-plugin-chromium",
+  "version": "0.0.1",
+  "description": "Netlify Build Plugin for adding Chromium to Netlify CI/CD pipeline",
+  "keywords": [
+    "netlify",
+    "netlify plugin",
+    "netlify build plugin",
+    "chrome",
+    "netlify chrome plugin",
+    "netlify chrome build plugin",
+    "chromium",
+    "netlify chromium plugin",
+    "netlify chromium build plugin"
+  ],
+  "author": "Jakub Sowiński <pansoofka@gmail.com> (https://soofka.pl)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soofka/netlify-plugin-chromium.git"
+  },
+  "bugs": {
+    "url": "https://github.com/soofka/netlify-plugin-chromium/issues"
+  },
+  "homepage": "https://github.com/soofka/netlify-plugin-chromium#readme",
+  "main": "src/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rimraf lib && cpy src/*.{js,yml} lib",
+    "test": "jest --config jestconfig.json",
+    "test:coverage": "npm run test -- --coverage | coveralls",
+    "release": "standard-version",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "devDependencies": {
+    "coveralls": "^3.1.0",
+    "cpy-cli": "^3.1.0",
+    "jest": "^25.5.0",
+    "rimraf": "^3.0.2",
+    "standard-version": "^7.1.0",
+    "yamljs": "^0.3.0"
+  }
+}
