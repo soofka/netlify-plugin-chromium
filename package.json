@@ -4,6 +4,8 @@
   "description": "Netlify Build Plugin for adding Chromium to Netlify CI/CD pipeline",
   "keywords": [
     "netlify",
+    "plugin",
+    "netlify-plugin",
     "netlify plugin",
     "netlify build plugin",
     "chrome",
