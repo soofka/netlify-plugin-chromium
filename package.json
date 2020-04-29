@@ -23,7 +23,7 @@
     "url": "https://github.com/soofka/netlify-plugin-chromium/issues"
   },
   "homepage": "https://github.com/soofka/netlify-plugin-chromium#readme",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "files": [
     "lib"
   ],
