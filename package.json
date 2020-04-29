@@ -1,6 +1,6 @@
 {
   "name": "netlify-plugin-chromium",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Netlify Build Plugin for adding Chromium to Netlify CI/CD pipeline",
   "keywords": [
     "netlify",
