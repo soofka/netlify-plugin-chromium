@@ -16,7 +16,7 @@ const NetlifyChromiumPlugin = {
       } catch(requireError) {
         log('Chromium is not available, attempting to download');
 
-        await installChromium(utils.run, inputs.packageManager);
+        await installChromium(utils.run.command, inputs.packageManager);
         chromiumPath = getChromiumPath();
       }
 

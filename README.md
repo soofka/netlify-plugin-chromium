@@ -9,9 +9,9 @@
 ## About
 This is [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-plugins/). It is meant to be used in projects connected to [Netlify](https://www.netlify.com) CI/CD pipeline. Netlify Build Plugins are currently opt-in BETA feature. Learn how to enable them for your project [here](https://docs.netlify.com/configure-builds/build-plugins/#enable-build-plugins-beta).
 
-This plugin hooks into installation stage of the build process and extends it with additional step which checks if Chromium is installed and installs Chromium binaries if needed. The latest suitable build of Chromium for your platform will be installed with the help of [chromium npm package](https://www.npmjs.com/package/chromium).
+This plugin hooks into installation stage of the build process and extends it with additional step which checks if Chromium is installed and installs Chromium binaries if needed. The latest suitable build of Chromium for your platform will be installed with the help of [chromium npm package](https://www.npmjs.com/package/chromium). Installation typically takes around 20-30 seconds.
 
-⚠️ **Important**: By default, this plugin modifies value of environmental variable `CHROME_PATH`. [Read more &rarr;](###modification-of-environmental-variables)
+⚠️ **Important**: By default, this plugin modifies value of environmental variable `CHROME_PATH`. [Read more &raquo;](#modification-of-environmental-variables)
 
 ## Usage
 ### Installation
@@ -50,30 +50,15 @@ plugins:
 ### Output
 This plugin will generate output in your build logs similar to this:
 ```shell
-12:37:27 AM: ┌────────────────────────────────────────────────────┐
-12:37:27 AM: │ 1. onPreBuild command from netlify-plugin-chromium │
-12:37:27 AM: └────────────────────────────────────────────────────┘
-12:37:27 AM: ​
-12:37:58 AM: [NetlifyChromiumPlugin]: Installing Chromium with settings { setChromiumPathInEnv: true, failBuildOnError: false }
-12:37:58 AM: coronavirus-tracker@1.6.0 /opt/build/repo
-12:37:58 AM: └── (empty)
-12:37:58 AM: > chromium@2.1.2 postinstall /opt/build/repo/node_modules/chromium
-12:37:58 AM: > node install.js
-12:37:58 AM: Step 1. Retrieving Chromium latest revision number
-12:37:58 AM: Step 2. Downloading Chromium (this might take a while). Revision number: 763582
-12:37:58 AM: Step 3. Setting up Chromium binaries
-12:37:58 AM: Process is successfully finished
-12:37:58 AM: + chromium@2.1.2
-12:37:58 AM: added 10 packages from 9 contributors and audited 255723 packages in 24.645s
-12:37:58 AM:
-12:37:58 AM: 53 packages are looking for funding
-12:37:58 AM:   run `npm fund` for details
-12:37:58 AM:
-12:37:58 AM: found 0 vulnerabilities
-12:37:58 AM:
-12:37:58 AM: [NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome)
-12:37:58 AM: ​
-12:37:58 AM: (./src/netlify-plugin-chromium onPreBuild completed in 31.8s)
+8:47:31 PM: ┌──────────────────────────────────────┐
+8:47:31 PM: │ 1. onPreBuild command from ./src/lib │
+8:47:31 PM: └──────────────────────────────────────┘
+8:47:31 PM: ​
+8:47:31 PM: [NetlifyChromiumPlugin]: Installing Chromium with settings: {"packageManager":"npm","setChromePathInEnv":true,"failBuildOnError":false}
+8:47:31 PM: [NetlifyChromiumPlugin]: Setting environmental variable CHROME_PATH to /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome
+8:47:31 PM: [NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome)
+8:47:31 PM: ​
+8:47:31 PM: (./src/lib onPreBuild completed in 23ms)
 ```
 
 ### Modification of environmental variables

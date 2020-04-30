@@ -18,7 +18,9 @@ describe('NetlifyChromiumPlugin', () => {
   };
 
   const mockUtils = {
-    run: jest.fn(),
+    run: {
+      command: jest.fn(),
+    },
     build: {
       failBuild: jest.fn(),
       failPlugin: jest.fn(),
@@ -30,7 +32,7 @@ describe('NetlifyChromiumPlugin', () => {
     getChromiumPath.mockClear();
     installChromium.mockClear();
 
-    mockUtils.run.mockClear();
+    mockUtils.run.command.mockClear();
     mockUtils.build.failBuild.mockClear();
     mockUtils.build.failPlugin.mockClear();
 
@@ -136,7 +138,7 @@ describe('NetlifyChromiumPlugin', () => {
     
         expect(getChromiumPath).toBeCalledTimes(2);
         expect(installChromium).toBeCalledTimes(1);
-        expect(installChromium).toBeCalledWith(mockUtils.run, mockInputs.packageManager);
+        expect(installChromium).toBeCalledWith(mockUtils.run.command, mockInputs.packageManager);
       });
 
       describe('if setChromePathInEnv is true', () => {
@@ -218,7 +220,7 @@ describe('NetlifyChromiumPlugin', () => {
     
         expect(getChromiumPath).toBeCalledTimes(2);
         expect(installChromium).toBeCalledTimes(1);
-        expect(installChromium).toBeCalledWith(mockUtils.run, mockInputs.packageManager);
+        expect(installChromium).toBeCalledWith(mockUtils.run.command, mockInputs.packageManager);
       });
 
       it('does not set CHROME_PATH environmental variable', async () => {
