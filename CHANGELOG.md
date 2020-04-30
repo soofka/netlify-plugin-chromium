@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/soofka/netlify-plugin-chromium/compare/v1.1.0...v1.1.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* switched to appropriate Netlify task runner to run Chromium installation ([481bb67](https://github.com/soofka/netlify-plugin-chromium/commit/481bb67e21871187c4e408a8beb68e253cd9a54c))
+
 ## [1.1.0](https://github.com/soofka/netlify-plugin-chromium/compare/v1.0.1...v1.1.0) (2020-04-30)
 
 
