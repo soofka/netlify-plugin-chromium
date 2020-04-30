@@ -50,15 +50,27 @@ plugins:
 ### Output
 This plugin will generate output in your build logs similar to this:
 ```shell
-8:47:31 PM: ┌──────────────────────────────────────┐
-8:47:31 PM: │ 1. onPreBuild command from ./src/lib │
-8:47:31 PM: └──────────────────────────────────────┘
-8:47:31 PM: ​
-8:47:31 PM: [NetlifyChromiumPlugin]: Installing Chromium with settings: {"packageManager":"npm","setChromePathInEnv":true,"failBuildOnError":false}
-8:47:31 PM: [NetlifyChromiumPlugin]: Setting environmental variable CHROME_PATH to /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome
-8:47:31 PM: [NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome)
-8:47:31 PM: ​
-8:47:31 PM: (./src/lib onPreBuild completed in 23ms)
+10:50:12 PM: ┌────────────────────────────────────────────────────┐
+10:50:12 PM: │ 1. onPreBuild command from netlify-plugin-chromium │
+10:50:12 PM: └────────────────────────────────────────────────────┘
+10:50:12 PM: ​
+10:50:12 PM: [NetlifyChromiumPlugin]: Installing Chromium with settings: {"packageManager":"npm","setChromePathInEnv":true,"failBuildOnError":false}
+10:50:12 PM: [NetlifyChromiumPlugin]: Chromium is not available, attempting to download
+10:50:27 PM: > chromium@2.1.2 postinstall /opt/build/repo/node_modules/chromium
+10:50:27 PM: > node install.js
+10:50:27 PM: Step 1. Retrieving Chromium latest revision number
+10:50:27 PM: Step 2. Downloading Chromium (this might take a while). Revision number: 764388
+10:50:29 PM: Step 3. Setting up Chromium binaries
+10:50:36 PM: Process is successfully finished
+10:50:39 PM: + chromium@2.1.2
+10:50:39 PM: added 10 packages from 9 contributors and audited 255724 packages in 26.368s
+10:50:40 PM: 53 packages are looking for funding
+10:50:40 PM:   run `npm fund` for details
+10:50:40 PM: found 0 vulnerabilities
+10:50:40 PM: [NetlifyChromiumPlugin]: Setting environmental variable CHROME_PATH to /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome
+10:50:40 PM: [NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: /opt/build/repo/node_modules/chromium/lib/chromium/chrome-linux/chrome)
+10:50:40 PM: ​
+10:50:40 PM: (netlify-plugin-chromium onPreBuild completed in 28.4s)
 ```
 
 ### Modification of environmental variables
