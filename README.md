@@ -43,6 +43,7 @@ plugins:
 plugins:
   - package: netlify-plugin-chromium
     inputs:
+      packageManager: yarn
       setChromePathInEnv: false
       failBuildOnError: true
 ```
@@ -80,3 +81,6 @@ By default, this plugin sets value of environmental variable `CHROME_PATH` to lo
 
 ### Usage examples
 - [coronavirus-tracker](https://github.com/soofka/coronavirus-tracker) uses this plugin to automatically run [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) tests for each build.
+
+## TODO
+- write functional tests with `ChromeLauncher` (especially `getInstallations` method)
