@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/soofka/netlify-plugin-chromium/compare/v1.0.1...v1.1.0) (2020-04-30)
+
+
+### Features
+
+* added support for yarn, improved performance and cross-platform compatibility ([c320327](https://github.com/soofka/netlify-plugin-chromium/commit/c3203276f9d919aff8116427177ad2cc6921bd0c))
+
 ### [1.0.1](https://github.com/soofka/netlify-plugin-chromium/compare/v1.0.0...v1.0.1) (2020-04-29)
 
 
