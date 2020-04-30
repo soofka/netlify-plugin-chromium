@@ -11,6 +11,8 @@ This is [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-p
 
 This plugin hooks into installation stage of the build process and extends it with additional step which checks if Chromium is installed and installs Chromium binaries if needed. The latest suitable build of Chromium for your platform will be installed with the help of [chromium npm package](https://www.npmjs.com/package/chromium).
 
+⚠️ **Important**: By default, this plugin modifies value of environmental variable `CHROME_PATH`. [Read more &rarr;](###modification-of-environmental-variables)
+
 ## Usage
 ### Installation
 First, install this [package from NPM](https://www.npmjs.com/package/chromium) as a dependency in your project:
@@ -74,8 +76,8 @@ This plugin will generate output in your build logs similar to this:
 12:37:58 AM: (./src/netlify-plugin-chromium onPreBuild completed in 31.8s)
 ```
 
-### Plugin and environmental variables
-By default, this plugin will set value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). However, you can opt out of this change by setting `setChromePathInEnv` parameter to `false`.
+### Modification of environmental variables
+By default, this plugin sets value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). However, you can opt out of this change by setting `setChromePathInEnv` parameter to `false`.
 
 *(In that case it is likely that you'd like to set this variable by yourself. Path to Chromium is exposed in build logs. Chromium is installed separately with each build, but typically it should be at the same location. You can take it from build logs, set it manually, disable `setChromePathInEnv` parameter, re-run the build, and expect it to work properly.)*
 
