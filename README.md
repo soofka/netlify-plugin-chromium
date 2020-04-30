@@ -11,8 +11,6 @@ This is [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-p
 
 This plugin hooks into installation stage of the build process and extends it with additional step which checks if Chromium is installed and installs Chromium binaries if needed. The latest suitable build of Chromium for your platform will be installed with the help of [chromium npm package](https://www.npmjs.com/package/chromium).
 
-⚠️ **Important**: By default, this plugin will set value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). However, you can opt out of this change by setting `setChromePathInEnv` parameter to `false`.
-
 ## Usage
 ### Installation
 First, install this [package from NPM](https://www.npmjs.com/package/chromium) as a dependency in your project:
@@ -32,10 +30,11 @@ plugins:
 
 ### Configuration
 #### Options
-| Name | Description | Default value |
-|-|-|-|
-| `setChromePathInEnv` | If true, sets value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). | `true` |
-| `failBuildOnError` | If true and Chromium installation finished with failure, whole build will fail. Otherwise, only this plugin fails and the rest of the build proceeds as usual. | `false` |
+| Name | Type | Description | Default value |
+|-|-|-|-|
+| `packageManager` | `npm` \| `yarn` | Package manager to install Chromium with; `npm` or `yarn`. | `npm` |
+| `setChromePathInEnv` | boolean | If true, sets value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). | `true` |
+| `failBuildOnError` | boolean | If true and Chromium installation finished with failure, whole build will fail. Otherwise, only this plugin fails and the rest of the build proceeds as usual. | `false` |
 
 #### Example
 ```yaml
@@ -74,6 +73,11 @@ This plugin will generate output in your build logs similar to this:
 12:37:58 AM: ​
 12:37:58 AM: (./src/netlify-plugin-chromium onPreBuild completed in 31.8s)
 ```
+
+### Plugin and environmental variables
+By default, this plugin will set value of environmental variable `CHROME_PATH` to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse). However, you can opt out of this change by setting `setChromePathInEnv` parameter to `false`.
+
+*(In that case it is likely that you'd like to set this variable by yourself. Path to Chromium is exposed in build logs. Chromium is installed separately with each build, but typically it should be at the same location. You can take it from build logs, set it manually, disable `setChromePathInEnv` parameter, re-run the build, and expect it to work properly.)*
 
 ### Usage examples
 - [coronavirus-tracker](https://github.com/soofka/coronavirus-tracker) uses this plugin to automatically run [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) tests for each build.

@@ -1,23 +1,33 @@
 import {
-  installChromiumIfNeeded,
+  log,
   getChromiumPath,
+  installChromium,
 } from './utils'
 
 const NetlifyChromiumPlugin = {
-  onInstall: ({ inputs, utils }) => {
-    console.log(`[NetlifyChromiumPlugin]: Installing Chromium with settings: ${JSON.stringify(inputs)}`);
+  onInstall: async ({ inputs, utils }) => {
+    log(`Installing Chromium with settings: ${JSON.stringify(inputs)}`);
 
     try {
-      installChromiumIfNeeded();
-      const path = getChromiumPath();
+      let chromiumPath;
 
-      if (inputs.setChromePathInEnv) {
-        process.env.CHROME_PATH = path;
+      try {
+        chromiumPath = getChromiumPath();
+      } catch(requireError) {
+        log('Chromium is not available, attempting to download');
+
+        await installChromium(utils.run, inputs.packageManager);
+        chromiumPath = getChromiumPath();
       }
 
-      console.log(`[NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: ${path})`);
+      if (inputs.setChromePathInEnv) {
+        log(`Setting environmental variable CHROME_PATH to ${chromiumPath}`);
+        process.env.CHROME_PATH = chromiumPath;
+      }
+
+      log(`Chromium installation finished with SUCCESS (path: ${chromiumPath})`);
     } catch(error) {
-      console.log('[NetlifyChromiumPlugin]: Chromium installation finished with FAILURE');
+      log('Chromium installation finished with FAILURE', error);
 
       const failFunc = inputs.failBuildOnError ? utils.build.failBuild : utils.build.failPlugin;
       failFunc('Error during Chromium installation', { error });

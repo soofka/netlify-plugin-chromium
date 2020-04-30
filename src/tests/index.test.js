@@ -1,21 +1,40 @@
 import {
-  installChromiumIfNeeded,
+  log,
   getChromiumPath,
+  installChromium,
 } from '../utils';
 jest.mock('../utils');
 
 import NetlifyChromiumPlugin from '../index';
 
-const initialChromePath = process.env.CHROME_PATH;
-
 describe('NetlifyChromiumPlugin', () => {
+  const mockError = new Error('MOCK_ERROR');
 
-  beforeAll(() => {
-    global.console.log = jest.fn();
-  });
+  const initialChromiumPath = process.env.CHROME_PATH;
+  const mockChromiumPath = 'MOCK_CHROMIUM_PATH';
+
+  const mockInputs = {
+    mockPackageManager: 'MOCK_PACKAGE_MANAGER',
+  };
+
+  const mockUtils = {
+    run: jest.fn(),
+    build: {
+      failBuild: jest.fn(),
+      failPlugin: jest.fn(),
+    }
+  }
 
   beforeEach(() => {
-    global.console.log.mockClear();
+    log.mockClear();
+    getChromiumPath.mockClear();
+    installChromium.mockClear();
+
+    mockUtils.run.mockClear();
+    mockUtils.build.failBuild.mockClear();
+    mockUtils.build.failPlugin.mockClear();
+
+    process.env.CHROME_PATH = initialChromiumPath;
   });
 
   it('exists', () => {
@@ -27,115 +46,256 @@ describe('NetlifyChromiumPlugin', () => {
     expect(typeof NetlifyChromiumPlugin.onInstall).toEqual('function');
   });
 
-  describe('in case of installation success', () => {
-
-    const MOCK_PATH = 'MOCK_PATH';
-
-    beforeAll(() => {
-      installChromiumIfNeeded.mockImplementation(() => {});
-      getChromiumPath.mockImplementation(() => MOCK_PATH);
-    });
+  describe('if Chromium is initially installed', () => {
 
     beforeEach(() => {
-      process.env.CHROME_PATH = initialChromePath;
-      installChromiumIfNeeded.mockClear();
-      getChromiumPath.mockClear();
+      getChromiumPath.mockImplementation(() => mockChromiumPath);
     });
 
-    it('properly logs all messages', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {},
-      });
-
-      expect(global.console.log.mock.calls).toEqual([
-        [`[NetlifyChromiumPlugin]: Installing Chromium with settings: ${JSON.stringify({})}`],
-        [`[NetlifyChromiumPlugin]: Chromium installation finished with SUCCESS (path: ${MOCK_PATH})`],
-      ]);
+    it('does not attempt to install Chromium', async () => {
+      await NetlifyChromiumPlugin.onInstall({ inputs: {} });
+  
+      expect(getChromiumPath).toBeCalledTimes(1);
+      expect(installChromium).toBeCalledTimes(0);
     });
 
-    it('installs Chromium if needed', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {},
+    describe('if setChromePathInEnv is true', () => {
+
+      const mockLocalInputs = {
+        setChromePathInEnv: true,
+        ...mockInputs,
+      };
+      
+      it('sets CHROME_PATH environmental variable to Chromium path', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockLocalInputs,
+        });
+
+        expect(process.env.CHROME_PATH).toEqual(mockChromiumPath);
       });
-      expect(installChromiumIfNeeded).toBeCalledTimes(1);
+
+      it('logs all messages', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockLocalInputs,
+        });
+
+        expect(log.mock.calls).toEqual([
+          [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+          [`Setting environmental variable CHROME_PATH to ${mockChromiumPath}`],
+          [`Chromium installation finished with SUCCESS (path: ${mockChromiumPath})`],
+        ]);
+      });
+
     });
 
-    it('sets CHROME_PATH in environmental variables if setChromePathInEnv is set to true', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {
-          setChromePathInEnv: true,
-        },
-      });
-      expect(process.env.CHROME_PATH).toEqual(MOCK_PATH);
-    });
+    describe('if setChromePathInEnv is false', () => {
 
-    it('does not set CHROME_PATH in environmental variables if setChromePathInEnv is set to false', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {
-          setChromePathInEnv: false,
-        },
+      const mockLocalInputs = {
+        setChromePathInEnv: false,
+        ...mockInputs,
+      };
+      
+      it('does not set CHROME_PATH environmental variable', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockLocalInputs,
+        });
+
+        expect(process.env.CHROME_PATH).toEqual(`${initialChromiumPath}`);
       });
-      expect(process.env.CHROME_PATH).toEqual(`${initialChromePath}`);
+
+      it('logs all messages', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockLocalInputs,
+        });
+
+        expect(log.mock.calls).toEqual([
+          [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+          [`Chromium installation finished with SUCCESS (path: ${mockChromiumPath})`],
+        ]);
+      });
+
     });
 
   });
 
-  describe('in case of installation failure', () => {
+  describe('if Chromium is initially not installed', () => {
 
-    const MOCK_ERROR = new Error('MOCK_ERROR');
-    const MOCK_UTILS = {
-      build: {
-        failBuild: jest.fn(),
-        failPlugin: jest.fn(),
-      },
-    };
+    describe('if Chromium is available for download', () => {
 
-    beforeAll(() => {
-      installChromiumIfNeeded.mockImplementation(() => { throw MOCK_ERROR; });
-    });
-
-    beforeEach(() => {
-      installChromiumIfNeeded.mockClear();
-      MOCK_UTILS.build.failBuild.mockClear();
-      MOCK_UTILS.build.failPlugin.mockClear();
-    });
-
-    it('properly logs all messages', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {},
-        utils: MOCK_UTILS,
+      beforeEach(() => {
+        getChromiumPath
+          .mockImplementationOnce(() => { throw mockError; })
+          .mockImplementationOnce(() => mockChromiumPath);
+      });
+    
+      it('attempts to install Chromium', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockInputs,
+          utils: mockUtils,
+        });
+    
+        expect(getChromiumPath).toBeCalledTimes(2);
+        expect(installChromium).toBeCalledTimes(1);
+        expect(installChromium).toBeCalledWith(mockUtils.run, mockInputs.packageManager);
       });
 
-      expect(global.console.log.mock.calls).toEqual([
-        [`[NetlifyChromiumPlugin]: Installing Chromium with settings: ${JSON.stringify({})}`],
-        ['[NetlifyChromiumPlugin]: Chromium installation finished with FAILURE'],
-      ]);
+      describe('if setChromePathInEnv is true', () => {
+
+        const mockLocalInputs = {
+          setChromePathInEnv: true,
+          ...mockInputs,
+        };
+      
+        it('sets CHROME_PATH environmental variable to Chromium path', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(process.env.CHROME_PATH).toEqual(mockChromiumPath);
+        });
+  
+        it('logs all messages', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(log.mock.calls).toEqual([
+            [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+            ['Chromium is not available, attempting to download'],
+            [`Setting environmental variable CHROME_PATH to ${mockChromiumPath}`],
+            [`Chromium installation finished with SUCCESS (path: ${mockChromiumPath})`],
+          ]);
+        });
+
+      });
+
+      describe('if setChromePathInEnv is false', () => {
+
+        const mockLocalInputs = {
+          setChromePathInEnv: false,
+          ...mockInputs,
+        };
+      
+        it('does not set CHROME_PATH environmental variable', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(process.env.CHROME_PATH).toEqual(`${initialChromiumPath}`);
+        });
+  
+        it('logs all messages', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(log.mock.calls).toEqual([
+            [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+            ['Chromium is not available, attempting to download'],
+            [`Chromium installation finished with SUCCESS (path: ${mockChromiumPath})`],
+          ]);
+        });
+
+      });
+
     });
 
-    it('fails build if failBuildOnError is set to true', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {
+    describe('if Chromium is not available for download', () => {
+
+      beforeEach(() => {
+        getChromiumPath.mockImplementation(() => { throw mockError; });
+      });
+    
+      it('attempts to install Chromium', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockInputs,
+          utils: mockUtils,
+        });
+    
+        expect(getChromiumPath).toBeCalledTimes(2);
+        expect(installChromium).toBeCalledTimes(1);
+        expect(installChromium).toBeCalledWith(mockUtils.run, mockInputs.packageManager);
+      });
+
+      it('does not set CHROME_PATH environmental variable', async () => {
+        await NetlifyChromiumPlugin.onInstall({
+          inputs: mockInputs,
+          utils: mockUtils,
+        });
+
+        expect(process.env.CHROME_PATH).toEqual(`${initialChromiumPath}`);
+      });
+
+      describe('if failBuildOnError is true', () => {
+
+        const mockLocalInputs = {
           failBuildOnError: true,
-        },
-        utils: MOCK_UTILS,
+          ...mockInputs,
+        };
+      
+        it('fails build', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(mockUtils.build.failPlugin).toBeCalledTimes(0);
+          expect(mockUtils.build.failBuild).toBeCalledTimes(1);
+          expect(mockUtils.build.failBuild).toBeCalledWith('Error during Chromium installation', { error: mockError });
+        });
+  
+        it('logs all messages', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(log.mock.calls).toEqual([
+            [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+            ['Chromium is not available, attempting to download'],
+            ['Chromium installation finished with FAILURE', mockError],
+          ]);
+        });
+
       });
 
-      expect(MOCK_UTILS.build.failPlugin).toBeCalledTimes(0);
-      expect(MOCK_UTILS.build.failBuild).toBeCalledTimes(1);
-      expect(MOCK_UTILS.build.failBuild).toBeCalledWith('Error during Chromium installation', { error: MOCK_ERROR });
-    });
+      describe('if failBuildOnError is false', () => {
 
-    it('fails plugin if failBuildOnError is set to false', () => {
-      NetlifyChromiumPlugin.onInstall({
-        inputs: {
+        const mockLocalInputs = {
           failBuildOnError: false,
-        },
-        utils: MOCK_UTILS,
+          ...mockInputs,
+        };
+      
+        it('does not build', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+
+          expect(mockUtils.build.failBuild).toBeCalledTimes(0);
+          expect(mockUtils.build.failPlugin).toBeCalledTimes(1);
+          expect(mockUtils.build.failPlugin).toBeCalledWith('Error during Chromium installation', { error: mockError });
+        });
+  
+        it('logs all messages', async () => {
+          await NetlifyChromiumPlugin.onInstall({
+            inputs: mockLocalInputs,
+            utils: mockUtils,
+          });
+          
+          expect(log.mock.calls).toEqual([
+            [`Installing Chromium with settings: ${JSON.stringify(mockLocalInputs)}`],
+            ['Chromium is not available, attempting to download'],
+            ['Chromium installation finished with FAILURE', mockError],
+          ]);
+        });
+
       });
 
-      expect(MOCK_UTILS.build.failBuild).toBeCalledTimes(0);
-      expect(MOCK_UTILS.build.failPlugin).toBeCalledTimes(1);
-      expect(MOCK_UTILS.build.failPlugin).toBeCalledWith('Error during Chromium installation', { error: MOCK_ERROR });
     });
 
   });
