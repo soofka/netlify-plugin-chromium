@@ -27,7 +27,8 @@
   "homepage": "https://github.com/soofka/netlify-plugin-chromium#readme",
   "main": "lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "manifest.yml"
   ],
   "scripts": {
     "build": "rimraf lib && rollup src/index.js --file lib/index.js --format cjs && cpy src/manifest.yml lib",
