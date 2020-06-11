@@ -5,7 +5,7 @@ import {
 } from './utils'
 
 const NetlifyChromiumPlugin = {
-  onInstall: async ({ inputs, utils }) => {
+  onPreBuild: async ({ inputs, utils }) => {
     log(`Installing Chromium with settings: ${JSON.stringify(inputs)}`);
 
     try {
