@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/soofka/netlify-plugin-chromium/compare/v1.1.3...v1.1.4) (2020-06-11)
+
+
+### Bug Fixes
+
+* switched default value of setChromePathInEnv parameter to true (as per README) ([7e9f6df](https://github.com/soofka/netlify-plugin-chromium/commit/7e9f6df41f84c8a6efec9c09bf5475eab8bb5236))
+
 ### [1.1.3](https://github.com/soofka/netlify-plugin-chromium/compare/v1.1.2...v1.1.3) (2020-06-11)
 
 
