@@ -5,7 +5,7 @@ inputs:
     default: npm
   - name: setChromePathInEnv
     description: If true, sets value of environment variable CHROME_PATH to location of local copy of Chromium binaries. This change is required by many tools relying on Chromium to be able to find it and launch it successfully (such as Lighthouse).
-    default: false
+    default: true
   - name: failBuildOnError
     description: If true and Chromium installation finished with failure, whole build will fail. Otherwise, only this plugin fails and the rest of the build proceeds as usual.
     default: false
