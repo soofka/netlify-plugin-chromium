@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/soofka/netlify-plugin-chromium/compare/v1.1.1...v1.1.2) (2020-06-11)
+
+
+### Bug Fixes
+
+* added manifest.yml file properly ([d85cd3e](https://github.com/soofka/netlify-plugin-chromium/commit/d85cd3ef03c75ed2cd0641d03c4b6543d39a84ec))
+
 ### [1.1.1](https://github.com/soofka/netlify-plugin-chromium/compare/v1.1.0...v1.1.1) (2020-04-30)
 
 
