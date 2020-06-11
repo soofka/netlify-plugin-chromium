@@ -31,7 +31,7 @@
     "manifest.yml"
   ],
   "scripts": {
-    "build": "rimraf lib && rollup src/index.js --file lib/index.js --format cjs && cpy src/manifest.yml lib",
+    "build": "rimraf lib && rollup src/index.js --file lib/index.js --format cjs",
     "test": "jest --config jestconfig.json",
     "test:coverage": "npm run test -- --coverage | coveralls",
     "release": "standard-version",
@@ -42,7 +42,6 @@
     "@babel/preset-env": "^7.9.5",
     "babel-jest": "^25.5.1",
     "coveralls": "^3.1.0",
-    "cpy-cli": "^3.1.0",
     "jest": "^25.5.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.7.3",
