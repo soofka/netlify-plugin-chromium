@@ -48,5 +48,7 @@
     "standard-version": "^8.0.1",
     "yamljs": "^0.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chromium": "^3.0.2"
+  }
 }
