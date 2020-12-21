@@ -7,7 +7,7 @@
 🤖 [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-plugins/) for adding [Chromium](https://github.com/dtolstyi/node-chromium) to [Netlify](https://www.netlify.com) CI/CD pipeline.
 
 ## About
-This is [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-plugins/). It is meant to be used in projects connected to [Netlify](https://www.netlify.com) CI/CD pipeline. Netlify Build Plugins are currently opt-in BETA feature. Learn how to enable them for your project [here](https://docs.netlify.com/configure-builds/build-plugins/#enable-build-plugins-beta).
+This is [Netlify Build Plugin](https://docs.netlify.com/configure-builds/build-plugins/). It is meant to be used in projects connected to [Netlify](https://www.netlify.com) CI/CD pipeline.
 
 This plugin hooks into installation stage of the build process and extends it with additional step which checks if Chromium is installed and installs Chromium binaries if needed. The latest suitable build of Chromium for your platform will be installed with the help of [chromium npm package](https://www.npmjs.com/package/chromium). Installation typically takes around 20-30 seconds.
 
@@ -15,7 +15,10 @@ This plugin hooks into installation stage of the build process and extends it wi
 
 ## Usage
 ### Installation
-First, install this [package from NPM](https://www.npmjs.com/package/chromium) as a dependency in your project:
+
+You can install this plugin in the Netlify UI from this [direct in-app installation link](https://app.netlify.com/plugins/netlify-plugin-chromium/install) or from the [Plugins directory](https://app.netlify.com/plugins).
+
+For file-based installation, first install this [package from NPM](https://www.npmjs.com/package/chromium) as a dependency in your project:
 
 ```shell
 npm install --save-dev netlify-plugin-chromium
