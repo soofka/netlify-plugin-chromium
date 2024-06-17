@@ -1,6 +1,6 @@
 # Netlify Plugin Chromium
 
-### 2024 update
+## 2024 update
 
 **As of 2024, this repository is no longer maintained.**
 
