@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "local-netlify-mcp": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "<path-to-repo>/netlify-mcp.ts"
+      ]
+    }
+  }
+}
